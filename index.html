@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+<title>FELIQ | نظام إدارة سجلات فيلق الاستطلاع</title>
+<style>
+:root{--bg:#050b14;--panel:#0b1727;--panel2:#0e2034;--line:#1d3854;--text:#e8f3ff;--muted:#8ea9c2;--blue:#36a9ff;--cyan:#55e0e8;--good:#43d6a0;--warn:#ffca68;--danger:#ff6f7e}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;width:100%;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}
+body{background:radial-gradient(ellipse at 85% -10%,#12365b 0,transparent 38%),radial-gradient(ellipse at 5% 30%,#0b2940 0,transparent 30%),var(--bg);min-height:100vh}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.shell{width:min(1440px,100%);margin:auto;padding:20px clamp(12px,3vw,34px) 30px}
+header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 20px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(120deg,#0c1c30ee,#091524ee);box-shadow:0 15px 45px #0005}
+.brand{display:flex;align-items:center;gap:14px}.logo{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(145deg,#1a6aa5,#11253d);border:1px solid #4dbaff66;color:#dff6ff;font-weight:900;font-size:20px;box-shadow:inset 0 0 20px #50baff25}
+h1{font-size:clamp(18px,3vw,26px);margin:0 0 6px}.sub{color:var(--muted);font-size:12px}.head-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:#10243a;color:var(--text);padding:10px 14px;border-radius:11px;font-size:13px;transition:.2s}.btn:hover{border-color:var(--blue);transform:translateY(-1px)}.primary{background:linear-gradient(120deg,#087ecb,#16a9d4);border:0;color:white;font-weight:bold}.danger{border-color:#743743;background:#351923;color:#ffb5bd}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}.stat{padding:17px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(140deg,#0d1e31,#091522)}.stat small{color:var(--muted)}.stat strong{display:block;font-size:27px;margin-top:7px;color:#a9dcff}
+.layout{display:grid;grid-template-columns:280px 1fr;gap:15px}.side,.main{border:1px solid var(--line);border-radius:18px;background:#091624ed;min-width:0}.side{padding:15px;height:max-content}.section-title{font-size:14px;margin:3px 0 12px;color:#bfe5ff}.month-list{display:grid;gap:7px}.month{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:right;padding:11px 12px;border-radius:11px;border:1px solid transparent;background:#0d2033;color:var(--text)}.month.active{border-color:#258bc8;background:linear-gradient(100deg,#103a5b,#10263c)}.month small{color:var(--muted)}.month em{font-style:normal;color:#9ccfff;font-size:12px}
+.main{padding:18px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:15px}.toolbar h2{margin:0;font-size:20px}.tools{display:flex;gap:8px;flex-wrap:wrap}.search{background:#06111e;border:1px solid var(--line);color:var(--text);padding:10px 12px;border-radius:10px;min-width:190px}
+.notice{padding:11px 13px;border-radius:11px;background:#18263a;border:1px solid #344b64;color:#bdd4e9;font-size:12px;margin-bottom:14px;line-height:1.8}.notice.warn{border-color:#72582b;background:#2b2415;color:#ffe0a2}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px}table{width:100%;border-collapse:collapse;min-width:760px;background:#081421}th,td{padding:12px 10px;border-bottom:1px solid #172c40;text-align:right;font-size:13px;white-space:nowrap}th{background:#10243a;color:#9fd8ff;font-weight:bold;position:sticky;top:0}tr:hover td{background:#0e2032}.badge{padding:4px 8px;border-radius:20px;background:#123b52;color:#9ce7ff;font-size:11px}.empty{padding:35px 12px;text-align:center;color:var(--muted)}
+footer{text-align:center;color:#7894ad;font-size:12px;line-height:2;margin:25px 0 0;padding:17px;border-top:1px solid #193047}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:10;align-items:center;justify-content:center;padding:15px}.modal.show{display:flex}.dialog{width:min(600px,100%);max-height:90vh;overflow:auto;background:#0b1929;border:1px solid #2c5274;border-radius:18px;padding:20px;box-shadow:0 20px 80px #000b}.dialog h3{margin:0 0 16px}.form{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:#9ebbd4}.field input,.field select,.field textarea{width:100%;background:#06111d;border:1px solid #29445e;border-radius:9px;padding:10px;color:var(--text);min-width:0}.field textarea{min-height:75px;resize:vertical}.modal-actions{display:flex;gap:8px;justify-content:flex-start;margin-top:16px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#12334a;border:1px solid #2878a9;padding:11px 17px;border-radius:12px;display:none;z-index:20;font-size:13px}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.month-list{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,1fr)}header{align-items:flex-start;flex-direction:column}.head-actions{width:100%}.head-actions .btn{flex:1}}
+@media(max-width:460px){.month-list{grid-template-columns:1fr 1fr}.main{padding:12px}.stats{gap:8px}.stat{padding:13px}.stat strong{font-size:23px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.search{width:100%}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+ <div class="brand"><div class="logo">FQ</div><div><h1>FELIQ — نظام إدارة سجلات فيلق الاستطلاع</h1><div class="sub">لوحة السجلات الشهرية وإدارة بيانات الأعضاء</div></div></div>
+ <div class="head-actions">
+  <button class="btn" id="exportBtn">تصدير نسخة JSON</button><button class="btn" id="backupBtn">نسخة احتياطية</button><button class="btn" id="importBtn">استيراد</button><input id="importFile" type="file" accept=".json,application/json" hidden>
+ </div>
+</header>
+<div class="stats">
+ <div class="stat"><small>الأشهر المسجلة</small><strong id="monthsCount">11</strong></div>
+ <div class="stat"><small>مجموع الأعداد المعلنة</small><strong id="totalCount">287</strong></div>
+ <div class="stat"><small>سجلات الأعضاء المدخلة</small><strong id="membersCount">42</strong></div>
+ <div class="stat"><small>الشهر المحدد</small><strong id="selectedLabel">11/2026</strong></div>
+</div>
+<div class="layout">
+ <aside class="side"><div class="section-title">الأرشيف الشهري — 2026</div><div class="month-list" id="monthList"></div></aside>
+ <main class="main">
+  <div class="toolbar"><h2 id="monthTitle">نوفمبر 2026</h2><div class="tools"><input class="search" id="search" placeholder="بحث بالاسم أو الكود أو المنصب..."><button class="btn primary" id="addBtn">＋ إضافة عضو</button></div></div>
+  <div class="notice" id="monthNotice">بيانات الشهر محفوظة محلياً على هذا الجهاز. يمكنك التعديل والتصدير في أي وقت.</div>
+  <div class="tools" style="margin-bottom:12px"><button class="btn" id="editCountBtn">تعديل العدد المعلن</button><button class="btn" id="copyBtn">نسخ جدول الشهر</button><button class="btn" id="clearSearchBtn">مسح البحث</button></div>
+  <div class="table-wrap"><table><thead><tr><th>#</th><th>الاسم</th><th>الكود</th><th>المنصب</th><th>التغيّر</th><th>الجنسية</th><th>إجراءات</th></tr></thead><tbody id="rows"></tbody></table></div>
+  <div class="empty" id="empty" hidden>لا توجد أسماء مدخلة لهذا الشهر حتى الآن.</div>
+ </main>
+</div>
+<footer>تطوير وتصميم: ارطغرل<br>© جميع الحقوق محفوظة لدى إدارة فيلق الاستطلاع</footer>
+</div>
+<div class="modal" id="modal"><div class="dialog"><h3 id="modalTitle">إضافة عضو</h3><form id="memberForm"><div class="form">
+ <div class="field"><label>الاسم</label><input id="fName" required></div><div class="field"><label>الكود</label><input id="fCode"></div>
+ <div class="field"><label>المنصب</label><input id="fRole" placeholder="عضو"></div><div class="field"><label>التغيّر</label><input id="fChange" placeholder="+1"></div>
+ <div class="field"><label>الجنسية / العلم</label><input id="fNation" placeholder="🇹🇳"></div><div class="field"><label>ملاحظة</label><input id="fNote"></div>
+ </div><div class="modal-actions"><button class="btn primary" type="submit">حفظ</button><button class="btn" type="button" id="cancelBtn">إلغاء</button></div></form></div></div>
+<div class="toast" id="toast"></div>
+<script>
+const seed={
+"01":{name:"يناير 2026",count:24,status:"عدد الشهر معروف، لكن تفاصيل الأعضاء غير متوفرة في البيانات الحالية.",members:[]},
+"02":{name:"فبراير 2026",count:26,status:"عدد الشهر معروف، لكن تفاصيل الأعضاء غير متوفرة في البيانات الحالية.",members:[]},
+"03":{name:"مارس 2026",count:null,status:"السجل غير متاح — تُرك فارغاً دون إضافة بيانات.",members:[]},
+"04":{name:"أبريل 2026",count:30,status:"العدد المعلن محفوظ؛ تفاصيل الأعضاء غير متوفرة هنا.",members:[]},
+"05":{name:"مايو 2026",count:30,status:"العدد المعلن محفوظ؛ تفاصيل الأعضاء غير متوفرة هنا.",members:[]},
+"06":{name:"يونيو 2026",count:30,status:"العدد المعلن محفوظ؛ تفاصيل الأعضاء غير متوفرة هنا.",members:[]},
+"07":{name:"يوليو 2026",count:32,status:"العدد المعلن محفوظ؛ تفاصيل الأعضاء غير متوفرة هنا.",members:[]},
+"08":{name:"أغسطس 2026",count:27,status:"العدد المعلن محفوظ؛ تفاصيل الأعضاء غير متوفرة هنا.",members:[]},
+"09":{name:"سبتمبر 2026",count:23,status:"العدد المعلن محفوظ؛ تفاصيل الأعضاء غير متوفرة هنا.",members:[]},
+"10":{name:"أكتوبر 2026",count:23,status:"",members:[
+["عبدو","02000000B","المؤسس","","🇱🇧"],["ريم","1-02","القائد","","🇪🇬"],["الياس","1-02","النائب","","🇩🇿"],["سيليا","1133-02","المسؤول المالي","","🇪🇬"],["ياسين","1147-02","الملازم الأول","","🇩🇿"],
+["مارتن","03-02","عضو","+3","🇱🇧"],["فيونا","293-02","عضو","+3","🇸🇴"],["رايلي","315-02","عضو","+3","🇸🇾"],["سامح","577-02","عضو","+2","🇪🇬"],["فارس","579-02","عضو","1-","🇲🇷"],["عمر","915-02","عضو","+2","🇪🇬"],["ساجد","1118-02","عضو","+1","🇩🇿"],["شيري","1123-02","عضو","3+","🇸🇴"],["ليو","1124-02","عضو","+1","🇲🇦"],["مايكي","1162-02","عضو","+2","🇸🇩"],["باتمان","1165-02","عضو","+1","🇲🇦"],["ليلى","1171-02","عضو","+2","🇪🇬"],["ابراهيم","1175-02","عضو","+3","🇮🇶"],["انستازيا","1182-02","عضو","+3","🇸🇾"],["اليزابيث","1164-02","عضو","0","🇩🇿"],["اياتو","496-02","عضو","+1","🇵🇸"],["ياسر","706-02","عضو","+2","🇩🇿"],["حمادي","1184-02","عضو","+2","🇱🇾"]].map(a=>({name:a[0],code:a[1],role:a[2],change:a[3],nation:a[4],note:""}))},
+"11":{name:"نوفمبر 2026",count:19,status:"",members:[
+["عبدو","02000000B","المؤسس","","🇱🇧"],["ارطغرل","1-02","القائد","","🇹🇳"],["سيليا","1-02","النائب","","🇪🇬"],["فارس","579-02","الملازم الثاني","0","🇲🇷"],
+["مارتن","03-02","عضو","+3","🇱🇧"],["صلاح","210-02","عضو","+2","🇪🇬"],["فيونا","293-02","عضو","+3","🇸🇴"],["رايلي","315-02","عضو","+3","🇸🇾"],["آياتو","496-02","عضو","+1","🇵🇸"],["عمر","915-02","عضو","+2","🇪🇬"],["إلياس","1044-02","عضو","+2","🇩🇿"],["ساجد","1118-02","عضو","+1","🇩🇿"],["شيري","1123-02","عضو","3+","🇸🇴"],["ليو","1124-02","عضو","+1","🇲🇦"],["ياسين","1147-02","عضو","+1","🇩🇿"],["مايكي","1162-02","عضو","+2","🇸🇩"],["باتمان","1165-02","عضو","+1","🇲🇦"],["ليلى","1171-02","عضو","+2","🇪🇬"],["انستازيا","1182-02","عضو","+3","🇸🇾"]].map(a=>({name:a[0],code:a[1],role:a[2],change:a[3],nation:a[4],note:""}))},
+"12":{name:"ديسمبر 2026",count:null,status:"لم يصدر سجل هذا الشهر بعد.",members:[]}
+};
+let data=JSON.parse(localStorage.getItem("feliq_records_v1")||"null")||seed;
+let current="11",editIndex=-1;
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem("feliq_records_v1",JSON.stringify(data));render();toast("تم الحفظ على هذا الجهاز");}
+function toast(s){$("toast").textContent=s;$("toast").style.display="block";setTimeout(()=>$("toast").style.display="none",2300)}
+function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function render(){
+ const keys=Object.keys(data).sort();$("monthList").innerHTML=keys.map(k=>`<button class="month ${k===current?"active":""}" data-month="${k}"><span>${escapeHTML(data[k].name)}</span><em>${data[k].count===null?"—":data[k].count}</em></button>`).join("");
+ document.querySelectorAll("[data-month]").forEach(b=>b.onclick=()=>{current=b.dataset.month;render()});
+ let m=data[current];$("monthTitle").textContent=m.name;$("selectedLabel").textContent=current+"/2026";
+ $("monthNotice").textContent=m.status||"بيانات الشهر محفوظة محلياً على هذا الجهاز. يمكنك التعديل والتصدير في أي وقت.";
+ $("monthNotice").className="notice"+(["03","12"].includes(current)?" warn":"");
+ let q=$("search").value.trim().toLowerCase();let list=m.members.filter(x=>[x.name,x.code,x.role,x.change,x.nation,x.note].join(" ").toLowerCase().includes(q));
+ $("rows").innerHTML=list.map(x=>{let i=m.members.indexOf(x);return `<tr><td>${i+1}</td><td>${escapeHTML(x.name)}</td><td>${escapeHTML(x.code)}</td><td><span class="badge">${escapeHTML(x.role||"عضو")}</span></td><td>${escapeHTML(x.change)}</td><td>${escapeHTML(x.nation)}</td><td><button class="btn" onclick="editMember(${i})">تعديل</button> <button class="btn danger" onclick="deleteMember(${i})">حذف</button></td></tr>`}).join("");
+ $("empty").hidden=list.length>0;
+ $("monthsCount").textContent=keys.filter(k=>data[k].count!==null).length;
+ $("totalCount").textContent=keys.reduce((s,k)=>s+(Number(data[k].count)||0),0);
+ $("membersCount").textContent=keys.reduce((s,k)=>s+data[k].members.length,0);
+}
+function openModal(i=-1){editIndex=i;let x=i<0?{}:data[current].members[i];$("modalTitle").textContent=i<0?"إضافة عضو":"تعديل بيانات العضو";$("fName").value=x.name||"";$("fCode").value=x.code||"";$("fRole").value=x.role||"عضو";$("fChange").value=x.change||"";$("fNation").value=x.nation||"";$("fNote").value=x.note||"";$("modal").classList.add("show")}
+window.editMember=i=>openModal(i);
+window.deleteMember=i=>{if(confirm("هل تريد حذف هذا العضو من سجل الشهر؟")){data[current].members.splice(i,1);save()}};
+$("addBtn").onclick=()=>openModal();$("cancelBtn").onclick=()=>$("modal").classList.remove("show");
+$("memberForm").onsubmit=e=>{e.preventDefault();let x={name:$("fName").value.trim(),code:$("fCode").value.trim(),role:$("fRole").value.trim(),change:$("fChange").value.trim(),nation:$("fNation").value.trim(),note:$("fNote").value.trim()};if(editIndex<0)data[current].members.push(x);else data[current].members[editIndex]=x;$("modal").classList.remove("show");save()};
+$("search").oninput=render;$("clearSearchBtn").onclick=()=>{$("search").value="";render()};
+$("editCountBtn").onclick=()=>{let v=prompt("أدخل العدد المعلن لهذا الشهر (اتركه فارغاً إذا لم يصدر):",data[current].count??"");if(v===null)return;data[current].count=v.trim()===""?null:Number(v);save()};
+function download(name,content,type){let a=document.createElement("a"),u=URL.createObjectURL(new Blob([content],{type}));a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
+$("exportBtn").onclick=()=>download("FELIQ-records-2026.json",JSON.stringify(data,null,2),"application/json");
+$("backupBtn").onclick=()=>download("FELIQ-backup-"+new Date().toISOString().slice(0,10)+".json",JSON.stringify({version:1,exportedAt:new Date().toISOString(),records:data},null,2),"application/json");
+$("importBtn").onclick=()=>$("importFile").click();
+$("importFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let j=JSON.parse(await f.text());let incoming=j.records||j;if(!incoming["01"]||!incoming["12"])throw Error();if(confirm("سيتم استبدال السجلات الحالية بالملف المستورد. متابعة؟")){data=incoming;save()}}catch(err){alert("تعذر قراءة الملف. تأكد أنه نسخة JSON صادرة من نظام FELIQ.")}e.target.value=""};
+$("copyBtn").onclick=async()=>{let m=data[current],lines=[m.name+" — العدد المعلن: "+(m.count??"غير متاح"),"الاسم | الكود | المنصب | التغيّر | الجنسية",...m.members.map(x=>[x.name,x.code,x.role,x.change,x.nation].join(" | "))];try{await navigator.clipboard.writeText(lines.join("\n"));toast("تم نسخ سجل الشهر")}catch(e){alert(lines.join("\n"))}};
+render();
+</script>
+</body></html>
